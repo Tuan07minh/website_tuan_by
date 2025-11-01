@@ -271,6 +271,140 @@ def decode_image():
     except Exception as e:
         return jsonify({'error': str(e)}), 400
 
+#########################
+ef xor_encrypt(text, password):
+    """Mã hóa/giải mã text bằng XOR với password"""
+    if not password:
+        return text
+    result = ''
+    for i, char in enumerate(text):
+        result += chr(ord(char) ^ ord(password[i % len(password)]))
+    return result
+
+def string_to_binary(text):
+    """Chuyển string thành binary"""
+    return ''.join(format(ord(char), '08b') for char in text)
+
+def binary_to_string(binary):
+    """Chuyển binary thành string"""
+    chars = [binary[i:i+8] for i in range(0, len(binary), 8)]
+    return ''.join(chr(int(char, 2)) for char in chars if len(char) == 8)
+
+def encode_message_into_image(image_bytes, message, password=''):
+    """Giấu message vào image"""
+    # Mã hóa message nếu có password
+    processed_message = xor_encrypt(message, password) if password else message
+    full_message = processed_message + '###END###'
+    binary_message = string_to_binary(full_message)
+    
+    # Load image
+    image = Image.open(io.BytesIO(image_bytes))
+    if image.mode != 'RGB':
+        image = image.convert('RGB')
+    
+    pixels = np.array(image)
+    height, width, channels = pixels.shape
+    
+    # Kiểm tra capacity
+    max_bits = height * width * 3
+    if len(binary_message) > max_bits:
+        raise ValueError("Tin nhắn quá dài cho ảnh này!")
+    
+    # Embed binary vào LSB
+    flat_pixels = pixels.flatten()
+    for i, bit in enumerate(binary_message):
+        flat_pixels[i] = (flat_pixels[i] & 0xFE) | int(bit)
+    
+    pixels = flat_pixels.reshape((height, width, channels))
+    result_image = Image.fromarray(pixels.astype('uint8'), 'RGB')
+    
+    # Save to bytes
+    output = io.BytesIO()
+    result_image.save(output, format='PNG')
+    output.seek(0)
+    return output
+
+def decode_message_from_image(image_bytes, password=''):
+    """Trích xuất message từ image"""
+    image = Image.open(io.BytesIO(image_bytes))
+    if image.mode != 'RGB':
+        image = image.convert('RGB')
+    
+    pixels = np.array(image)
+    flat_pixels = pixels.flatten()
+    
+    # Extract binary từ LSB
+    binary_message = ''.join(str(pixel & 1) for pixel in flat_pixels)
+    
+    # Convert binary to string
+    extracted = binary_to_string(binary_message)
+    
+    # Tìm delimiter
+    end_index = extracted.find('###END###')
+    if end_index == -1:
+        raise ValueError("Không tìm thấy tin nhắn ẩn trong ảnh!")
+    
+    extracted = extracted[:end_index]
+    
+    # Giải mã nếu có password
+    if password:
+        extracted = xor_encrypt(extracted, password)
+    
+    return extracted
+
+@app.route('/mahoa')
+def mahoa():
+    return render_template('mahoa.html')
+
+@app.route('/encode', methods=['POST'])
+def encode():
+    try:
+        if 'image' not in request.files:
+            return jsonify({'success': False, 'error': 'Không có ảnh được upload!'})
+        
+        image_file = request.files['image']
+        message = request.form.get('message', '')
+        password = request.form.get('password', '')
+        
+        if not message:
+            return jsonify({'success': False, 'error': 'Tin nhắn không được để trống!'})
+        
+        image_bytes = image_file.read()
+        result_image = encode_message_into_image(image_bytes, message, password)
+        
+        # Convert to base64 để gửi về client
+        img_base64 = base64.b64encode(result_image.getvalue()).decode()
+        
+        return jsonify({
+            'success': True,
+            'image': 'data:image/png;base64,' + img_base64,
+            'message': 'Tin nhắn đã được giấu thành công!'
+        })
+    
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)})
+
+@app.route('/decode', methods=['POST'])
+def decode():
+    try:
+        if 'image' not in request.files:
+            return jsonify({'success': False, 'error': 'Không có ảnh được upload!'})
+        
+        image_file = request.files['image']
+        password = request.form.get('password', '')
+        
+        image_bytes = image_file.read()
+        extracted_message = decode_message_from_image(image_bytes, password)
+        
+        return jsonify({
+            'success': True,
+            'message': extracted_message
+        })
+    
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)})
+#############################
+
 if __name__ == "__main__":
     init_admin()  # Tạo admin khi khởi động
     app.run(debug=True)
