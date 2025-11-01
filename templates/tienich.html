@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tiện Ích - Matias</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            color: white;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: #a6ff00;
+            border-radius: 50%;
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: black;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 40px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #a6ff00;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .username {
+            color: #a6ff00;
+            font-weight: bold;
+        }
+
+        .logout-btn {
+            background: transparent;
+            color: white;
+            padding: 8px 20px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .logout-btn:hover {
+            background: #ff4444;
+            border-color: #ff4444;
+        }
+
+        .container {
+            padding: 100px 50px 50px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .page-title {
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #ffffff 0%, #a6ff00 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .page-subtitle {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.2rem;
+            margin-bottom: 50px;
+        }
+
+        .utilities-grid {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .sidebar {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+            height: fit-content;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .menu-title {
+            color: #a6ff00;
+            font-size: 14px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+        }
+
+        .menu-item {
+            padding: 15px 20px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .menu-item:hover {
+            background: rgba(166, 255, 0, 0.1);
+            border-color: rgba(166, 255, 0, 0.3);
+        }
+
+        .menu-item.active {
+            background: rgba(166, 255, 0, 0.15);
+            border-color: #a6ff00;
+        }
+
+        .menu-icon {
+            font-size: 20px;
+        }
+
+        .content-area {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            min-height: 500px;
+        }
+
+        .tool-section {
+            display: none;
+        }
+
+        .tool-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .tool-title {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 30px;
+            color: #a6ff00;
+        }
+
+        .upload-area {
+            border: 2px dashed rgba(166, 255, 0, 0.5);
+            border-radius: 15px;
+            padding: 60px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(166, 255, 0, 0.05);
+        }
+
+        .upload-area:hover {
+            border-color: #a6ff00;
+            background: rgba(166, 255, 0, 0.1);
+        }
+
+        .upload-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+        }
+
+        .upload-text {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .upload-hint {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 14px;
+        }
+
+        .btn {
+            background: #a6ff00;
+            color: black;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 16px;
+        }
+
+        .btn:hover {
+            background: #90e600;
+            transform: translateY(-2px);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .result-area {
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            display: none;
+        }
+
+        .result-area.active {
+            display: block;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 200px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 15px;
+            color: white;
+            font-family: monospace;
+            font-size: 14px;
+            resize: vertical;
+        }
+
+        .copy-btn {
+            background: transparent;
+            color: #a6ff00;
+            border: 1px solid #a6ff00;
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .copy-btn:hover {
+            background: #a6ff00;
+            color: black;
+        }
+
+        .template-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .template-card {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .template-card:hover {
+            transform: translateY(-5px);
+            border-color: #a6ff00;
+            box-shadow: 0 10px 30px rgba(166, 255, 0, 0.2);
+        }
+
+        .template-icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+
+        .template-name {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .template-desc {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+        }
+
+        .preview-image {
+            max-width: 100%;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .utilities-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                padding: 100px 20px 20px;
+            }
+
+            .content-area {
+                padding: 20px;
+            }
+
+            .template-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <div class="logo-icon">M</div>
+            Minh Tuấn
+        </div>
+        <ul class="nav-links">
+            <li><a href="/">Trang chủ</a></li>
+            <li><a href="/tienich">Tiện Ích</a></li>
+            <li><a href="/blog">Bài viết</a></li>
+            <li><a href="/contact">Liên hệ</a></li>
+        </ul>
+        <div class="user-menu">
+            <span class="username">👤 {{ username }}</span>
+            <a href="/logout" class="logout-btn">Đăng xuất</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1 class="page-title">Tiện Ích</h1>
+        <p class="page-subtitle">Các công cụ hữu ích dành cho developer</p>
+
+        <div class="utilities-grid">
+            <div class="sidebar">
+                <div class="menu-title">Menu</div>
+                <div class="menu-item active" data-tool="encode">
+                    <span class="menu-icon">🔐</span>
+                    <span>Mã hóa Hình ảnh</span>
+                </div>
+                <div class="menu-item" data-tool="decode">
+                    <span class="menu-icon">🔓</span>
+                    <span>Giải mã Base64</span>
+                </div>
+                <div class="menu-item" data-tool="templates">
+                    <span class="menu-icon">📝</span>
+                    <span>Template Mẫu</span>
+                </div>
+            </div>
+
+            <div class="content-area">
+                <!-- Encode Image Tool -->
+                <div class="tool-section active" id="encode">
+                    <h2 class="tool-title">Mã hóa Hình ảnh sang Base64</h2>
+                    <div class="upload-area" onclick="document.getElementById('imageInput').click()">
+                        <div class="upload-icon">📤</div>
+                        <div class="upload-text">Nhấp để chọn hình ảnh</div>
+                        <div class="upload-hint">Hỗ trợ: JPG, PNG, GIF (Tối đa 16MB)</div>
+                    </div>
+                    <input type="file" id="imageInput" accept="image/*" style="display: none;">
+                    
+                    <div id="previewArea" style="display: none; margin-top: 20px;">
+                        <img id="previewImage" class="preview-image">
+                        <button class="btn" onclick="encodeImage()" style="margin-top: 20px;">Mã hóa</button>
+                    </div>
+
+                    <div class="result-area" id="encodeResult">
+                        <h3>Kết quả Base64:</h3>
+                        <textarea id="encodedText" readonly></textarea>
+                        <button class="copy-btn" onclick="copyToClipboard('encodedText')">📋 Sao chép</button>
+                    </div>
+                </div>
+
+                <!-- Decode Tool -->
+                <div class="tool-section" id="decode">
+                    <h2 class="tool-title">Giải mã Base64 sang Hình ảnh</h2>
+                    <p style="margin-bottom: 20px; color: rgba(255,255,255,0.7);">Dán chuỗi Base64 vào ô bên dưới:</p>
+                    <textarea id="decodeInput" placeholder="Dán chuỗi Base64 của bạn vào đây..."></textarea>
+                    <button class="btn" onclick="decodeImage()" style="margin-top: 20px;">Giải mã</button>
+
+                    <div class="result-area" id="decodeResult">
+                        <h3>Hình ảnh đã giải mã:</h3>
+                        <img id="decodedImage" class="preview-image">
+                        <a id="downloadLink" class="btn" style="display: inline-block; margin-top: 20px; text-decoration: none;">Tải xuống</a>
+                    </div>
+                </div>
+
+                <!-- Templates Tool -->
+                <div class="tool-section" id="templates">
+                    <h2 class="tool-title">Template Mẫu</h2>
+                    <p style="margin-bottom: 20px; color: rgba(255,255,255,0.7);">Các template code mẫu để bắt đầu nhanh dự án của bạn</p>
+
+                    <div class="template-grid">
+                        <div class="template-card" onclick="showTemplate('html')">
+                            <div class="template-icon">🌐</div>
+                            <div class="template-name">HTML5 Landing Page</div>
+                            <div class="template-desc">Template trang landing hiện đại với CSS3 và animations</div>
+                        </div>
+
+                        <div class="template-card" onclick="showTemplate('react')">
+                            <div class="template-icon">⚛️</div>
+                            <div class="template-name">React Component</div>
+                            <div class="template-desc">Component React với hooks và state management</div>
+                        </div>
+
+                        <div class="template-card" onclick="showTemplate('flask')">
+                            <div class="template-icon">🐍</div>
+                            <div class="template-name">Flask API</div>
+                            <div class="template-desc">RESTful API với Flask và JWT authentication</div>
+                        </div>
+
+                        <div class="template-card" onclick="showTemplate('css')">
+                            <div class="template-icon">🎨</div>
+                            <div class="template-name">CSS Animations</div>
+                            <div class="template-desc">Bộ sưu tập animations và effects đẹp mắt</div>
+                        </div>
+
+                        <div class="template-card" onclick="showTemplate('js')">
+                            <div class="template-icon">⚡</div>
+                            <div class="template-name">JavaScript Utils</div>
+                            <div class="template-desc">Các hàm utility thông dụng cho JavaScript</div>
+                        </div>
+
+                        <div class="template-card" onclick="showTemplate('node')">
+                            <div class="template-icon">📦</div>
+                            <div class="template-name">Node.js Server</div>
+                            <div class="template-desc">Express.js server với MongoDB integration</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Menu navigation
+        document.querySelectorAll('.menu-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const tool = this.dataset.tool;
+                
+                document.querySelectorAll('.menu-item').forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+                
+                document.querySelectorAll('.tool-section').forEach(s => s.classList.remove('active'));
+                document.getElementById(tool).classList.add('active');
+            });
+        });
+
+        // Image upload preview
+        document.getElementById('imageInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('previewImage').src = e.target.result;
+                    document.getElementById('previewArea').style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Encode image
+        async function encodeImage() {
+            const input = document.getElementById('imageInput');
+            if (!input.files[0]) return;
+
+            const formData = new FormData();
+            formData.append('image', input.files[0]);
+
+            try {
+                const response = await fetch('/encode_image', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    document.getElementById('encodedText').value = data.encoded;
+                    document.getElementById('encodeResult').classList.add('active');
+                } else {
+                    alert('Lỗi: ' + data.error);
+                }
+            } catch (error) {
+                alert('Có lỗi xảy ra: ' + error);
+            }
+        }
+
+        // Decode image
+        async function decodeImage() {
+            const encoded = document.getElementById('decodeInput').value.trim();
+            if (!encoded) {
+                alert('Vui lòng nhập chuỗi Base64');
+                return;
+            }
+
+            try {
+                const response = await fetch('/decode_image', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ encoded: encoded })
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    document.getElementById('decodedImage').src = data.url;
+                    document.getElementById('downloadLink').href = data.url;
+                    document.getElementById('downloadLink').download = 'decoded_image.png';
+                    document.getElementById('decodeResult').classList.add('active');
+                } else {
+                    alert('Lỗi: ' + data.error);
+                }
+            } catch (error) {
+                alert('Có lỗi xảy ra: ' + error);
+            }
+        }
+
+        // Copy to clipboard
+        function copyToClipboard(elementId) {
+            const text = document.getElementById(elementId).value;
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Đã sao chép vào clipboard!');
+            });
+        }
+
+        // Show template
+        function showTemplate(type) {
+            const templates = {
+                html: `<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Landing Page</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; }
+        .hero { min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+    </style>
+</head>
+<body>
+    <section class="hero">
+        <h1>Welcome to Your Landing Page</h1>
+    </section>
+</body>
+</html>`,
+                react: `import React, { useState } from 'react';
+
+function MyComponent() {
+    const [count, setCount] = useState(0);
+
+    return (
+        <div>
+            <h1>Counter: {count}</h1>
+            <button onClick={() => setCount(count + 1)}>
+                Increment
+            </button>
+        </div>
+    );
+}
+
+export default MyComponent;`,
+                flask: `from flask import Flask, jsonify, request
+
+app = Flask(__name__)
+
+@app.route('/api/data', methods=['GET'])
+def get_data():
+    return jsonify({'message': 'Hello World'})
+
+@app.route('/api/data', methods=['POST'])
+def post_data():
+    data = request.get_json()
+    return jsonify({'received': data})
+
+if __name__ == '__main__':
+    app.run(debug=True)`,
+                css: `/* Fade In Animation */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+    animation: fadeIn 1s ease forwards;
+}
+
+/* Pulse Animation */
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+.pulse {
+    animation: pulse 2s infinite;
+}`,
+                js: `// Debounce function
+function debounce(func, wait) {
+    let timeout;
+    return function(...args) {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func.apply(this, args), wait);
+    };
+}
+
+// Format number with commas
+function formatNumber(num) {
+    return num.toString().replace(/\\B(?=(\\d{3})+(?!\\d))/g, ",");
+}`,
+                node: `const express = require('express');
+const mongoose = require('mongoose');
+
+const app = express();
+app.use(express.json());
+
+// MongoDB connection
+mongoose.connect('mongodb://localhost/mydb');
+
+// Routes
+app.get('/api/items', async (req, res) => {
+    // Your code here
+});
+
+app.listen(3000, () => {
+    console.log('Server running on port 3000');
+});`
+            };
+
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+                background: rgba(0,0,0,0.9); z-index: 10000;
+                display: flex; align-items: center; justify-content: center;
+                padding: 20px;
+            `;
+            
+            modal.innerHTML = `
+                <div style="background: #1a1a1a; padding: 40px; border-radius: 15px; max-width: 800px; width: 100%;">
+                    <h2 style="color: #a6ff00; margin-bottom: 20px;">Template: ${type.toUpperCase()}</h2>
+                    <textarea readonly style="width: 100%; height: 400px; background: #0a0a0a; color: white; border: 1px solid #333; padding: 15px; font-family: monospace; border-radius: 10px;">${templates[type]}</textarea>
+                    <div style="margin-top: 20px; display: flex; gap: 10px;">
+                        <button onclick="copyToClipboard2(this)" class="btn">Sao chép</button>
+                        <button onclick="this.closest('div').parentElement.parentElement.remove()" class="btn" style="background: #ff4444;">Đóng</button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+        }
+
+        function copyToClipboard2(btn) {
+            const textarea = btn.parentElement.previousElementSibling;
+            navigator.clipboard.writeText(textarea.value).then(() => {
+                const original = btn.textContent;
+                btn.textContent = '✓ Đã sao chép!';
+                setTimeout(() => btn.textContent = original, 2000);
+            });
+        }
+    </script>
+</body>
+</html>

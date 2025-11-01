@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile - Đạt Minh Tuấn</title>
+  <style>
+    :root {
+      --bg-color: #0e0c15;
+      --text-color: white;
+      --card-bg: rgba(30, 30, 30, 0.9);
+      --info-bg: white;
+      --info-text: black;
+    }
+
+    body.light {
+      --bg-color: #f0f0f0;
+      --text-color: black;
+      --card-bg: white;
+      --info-bg: #ffffff;
+      --info-text: black;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      transition: background-color 0.4s, color 0.4s;
+    }
+
+    .profile-card {
+      background: var(--card-bg);
+      padding: 30px;
+      border-radius: 20px;
+      text-align: center;
+      box-shadow: 0 0 40px rgba(0,0,0,0.5);
+      position: relative;
+      width: 320px;
+    }
+
+    .avatar img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      border: 3px solid #555;
+      object-fit: cover;
+    }
+
+    h1 {
+      margin: 15px 0 5px;
+      font-size: 22px;
+    }
+
+    .location {
+      font-size: 14px;
+      color: #ccc;
+    }
+
+    .location a {
+      color: #8caaff;
+      text-decoration: none;
+    }
+
+    .social-icons {
+      margin-top: 15px;
+    }
+
+    .social-icons a {
+      margin: 0 8px;
+      display: inline-block;
+    }
+
+    .social-icons img {
+      width: 28px;
+      height: 28px;
+      filter: brightness(1.2);
+    }
+
+    .info-button, .mode-toggle {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #4b5fff;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s ease;
+      margin-right: 10px;
+    }
+
+    .info-button:hover, .mode-toggle:hover {
+      background-color: #3b4de0;
+    }
+
+    .info-box {
+      position: absolute;
+      top: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: var(--info-bg);
+      color: var(--info-text);
+      border-radius: 12px;
+      padding: 20px;
+      width: 280px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+      display: none;
+      z-index: 999;
+      transition: all 0.3s ease;
+    }
+
+    .info-box h3 {
+      margin-top: 0;
+      font-size: 18px;
+    }
+
+    .info-box p {
+      margin: 8px 0;
+      font-size: 14px;
+    }
+
+    .info-box a {
+      color: #0055ff;
+      text-decoration: none;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 18px;
+      color: #555;
+    }
+
+    .info-box i {
+      margin-right: 5px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="profile-card">
+  <div class="avatar">
+    <img src="https://i.imgur.com/fQUnkqU.jpeg" alt="Ảnh đại diện">
+  </div>
+  <h1>Đạt Minh Tuấn</h1>
+  <p class="location">Đang sinh sống và học tập tại:<br>
+    <a href="#">Quận 9, Thành phố Hồ Chí Minh</a>
+  </p>
+  <div class="social-icons">
+    <a href="#"><img src="https://i.imgur.com/YJFygLU.jpeg" alt="Instagram"></a>
+    <a href="#"><img src="https://i.imgur.com/4oZ5RWV.jpeg" alt="Facebook"></a>
+    <a href="#"><img src="https://i.imgur.com/j04XcOl.jpeg" alt="TikTok"></a>
+    <a href="#"><img src="https://i.imgur.com/ZWVe9p9.jpeg" alt="GitHub"></a>
+  </div>
+
+  <!-- Các nút -->
+  <button class="info-button" onclick="toggleInfo()">Thông Tin</button>
+  <button class="mode-toggle" onclick="toggleMode()">Chuyển nền</button>
+
+  <!-- Hộp thông tin -->
+  <div class="info-box" id="infoBox">
+    <span class="close-btn" onclick="toggleInfo()">×</span>
+    <h3>📌 Thông tin</h3>
+    <p>👤 : Đạt Minh Tuấn</p>
+    <p>🎂 : 24/10/2007</p>
+    <p>📍 : Thuận Nam, Khánh Hòa</p>
+    <p>📞 : 113</p>
+    <p>💼 : Công việc: Security Engineer</p>
+    <p>✉️ G: <a href="mailto:datminhtuan07@gmail.com">datminhtuan07@gmail.com</a></p>
+    <hr>
+    <p>📂 Project</p>
+    <p>💻 <a href="#">AI tư vấn điều trị bệnh</a></p>
+    <p>💻 <a href="#">SSBOT</a></p>
+    <p>💻 <a href="#">Tool kpm</a></p>
+  </div>
+</div>
+
+<script>
+  function toggleInfo() {
+    const box = document.getElementById('infoBox');
+    box.style.display = (box.style.display === 'block') ? 'none' : 'block';
+  }
+
+  function toggleMode() {
+    document.body.classList.toggle('light');
+  }
+</script>
+
+</body>
+</html>

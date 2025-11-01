@@ -1,0 +1,14 @@
+{
+  "admin": {
+    "email": "admin@matias.com",
+    "password": "scrypt:32768:8:1$TOBScmrIyQ54HTvk$9c9de07ccc283577d949b713c535cf62bfb6378dc2fd0293c9eaa790cae98667be08f665222fd977a98c1b493654b2642956aef16db3385454ecf27c2cc1d885",
+    "role": "admin",
+    "created_at": "2025-11-01 14:28:23"
+  },
+  "tuan": {
+    "email": "userminhdat007@gmail.com",
+    "password": "scrypt:32768:8:1$rBkRQkwXoky8ykRi$5b5a06e3a0753291bf3fb75de548a03c4b12bff157a6f1a6d6ad254c41db87b9a20f2a780f0c0558104c19f850e3ea075bdf5f972402b51df5070de43292177a",
+    "role": "user",
+    "created_at": "2025-11-01 14:35:55"
+  }
+}
